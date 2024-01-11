@@ -20,7 +20,7 @@ const App: React.FC<{}> = () => {
             value={exponentBitsCount}
             onChange={(e) => {
               const val = parseInt(e.target.value);
-              if (val && val >= 0 && val < 31 - significandBitsCount)
+              if (val && val >= 0 && val <= 31 - significandBitsCount)
                 setExponentBitsCount(val);
             }}
           />
@@ -34,7 +34,7 @@ const App: React.FC<{}> = () => {
             value={significandBitsCount}
             onChange={(e) => {
               const val = parseInt(e.target.value);
-              if (val && val >= 0 && val < 31 - exponentBitsCount)
+              if (val && val >= 0 && val <= 31 - exponentBitsCount)
                 setSignificandBitsCount(val);
             }}
           />
