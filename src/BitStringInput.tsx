@@ -5,10 +5,6 @@ import {
 } from './util/decimalFloatConversion';
 import { nanoid } from 'nanoid';
 
-const signBitColor = '#f5c4b3';
-const exponentBitsColor = '#bed5fa';
-const significandBitsColor = '#cbf7cf';
-
 interface Props {
   exponentBitsCount: number;
   significandBitsCount: number;
@@ -70,7 +66,7 @@ export const BitStringInput: React.FC<Props> = ({
           setBitStr(null);
           setNum(null);
           const floatInput = parseFloat(inputText);
-          if (floatInput) {
+          if (floatInput && ('' + floatInput).length === inputText.length) {
             const conversionResult = convertDecimalToFloatString(
               floatInput,
               exponentBitsCount,
@@ -104,11 +100,11 @@ export const BitStringInput: React.FC<Props> = ({
             <button
               style={{
                 backgroundColor:
-                  i == 0
-                    ? signBitColor
+                  i === 0
+                    ? 'var(--signBitColor)'
                     : i < 1 + exponentBitsCount
-                    ? exponentBitsColor
-                    : significandBitsColor,
+                    ? 'var(--exponentBitsColor)'
+                    : 'var(--significandBitsColor)',
                 cursor: 'pointer',
               }}
               key={nanoid()}

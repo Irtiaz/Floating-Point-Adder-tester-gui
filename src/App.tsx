@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BitStringInput } from './BitStringInput';
+import { BitStringOutput } from './BitStringOutput';
 
 const App: React.FC<{}> = () => {
   const [exponentBitsCount, setExponentBitsCount] = useState(3);
@@ -59,6 +60,17 @@ const App: React.FC<{}> = () => {
           />
         </div>
       </div>
+
+      {numberA && numberB && (
+        <div style={{ textAlign: 'center' }}>
+          <div>Result</div>
+          <BitStringOutput
+            num={numberA + numberB}
+            exponentBitsCount={exponentBitsCount}
+            significandsBitCount={significandBitsCount}
+          />
+        </div>
+      )}
     </div>
   );
 };
