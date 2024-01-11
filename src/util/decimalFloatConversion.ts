@@ -2,7 +2,7 @@ export function convertDecimalToFloatString(
   num: number,
   exponentBitsCount: number,
   significandBitsCount: number
-): string {
+): { result: string; overflow: boolean; underflow: boolean } {
   let result = '';
   result += num >= 0 ? '0' : '1';
   const absNum = Math.abs(num);
@@ -14,7 +14,10 @@ export function convertDecimalToFloatString(
   result += convertDecimalIntToBinary(exponent + bias, exponentBitsCount);
   result += convertDecimalFractionToBinary(fraction, significandBitsCount);
 
-  return result;
+  const overflow = exponent + bias >= 1 << exponentBitsCount;
+  const underflow = exponent + bias < 0;
+
+  return { result, overflow, underflow };
 }
 
 export function convertFloatStringToDecimal(
