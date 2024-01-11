@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   convertDecimalToFloatString,
   convertFloatStringToDecimal,
@@ -23,8 +23,7 @@ export const BitStringInput: React.FC<Props> = ({
   const [num, setNum] = useState<number | null>(null);
   const [bitStr, setBitStr] = useState<string | null>(null);
 
-  const previousExponentBitsCount = useRef(exponentBitsCount);
-  const previousSignificandBitsCount = useRef(significandBitsCount);
+  const [splitBits, setSplitBits] = useState<boolean>(false);
 
   useEffect(() => {
     const floatInput = parseFloat(inputText);
@@ -45,9 +44,6 @@ export const BitStringInput: React.FC<Props> = ({
         setBitStr(result);
       }
     }
-
-    previousExponentBitsCount.current = exponentBitsCount;
-    previousSignificandBitsCount.current = significandBitsCount;
   }, [exponentBitsCount, significandBitsCount]);
 
   useEffect(() => {
@@ -91,6 +87,7 @@ export const BitStringInput: React.FC<Props> = ({
         <input
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
+          style={{ width: '100%' }}
         />
       </form>
       {overflow && <>Number is too large to be stored in memory</>}
@@ -98,7 +95,19 @@ export const BitStringInput: React.FC<Props> = ({
       {!overflow && !underflow && num && (
         <div>Actual number stored in memory: {num}</div>
       )}
+
       {!overflow && !underflow && bitStr && (
+        <div>
+          <label>Split bits to segments</label>
+          <input
+            type="checkbox"
+            checked={splitBits}
+            onChange={(e) => setSplitBits(e.target.checked)}
+          />
+        </div>
+      )}
+
+      {!overflow && !underflow && bitStr && !splitBits && (
         <div>
           {bitStr.split('').map((bit, i) => (
             <button
@@ -116,6 +125,65 @@ export const BitStringInput: React.FC<Props> = ({
               {bit}
             </button>
           ))}
+        </div>
+      )}
+      {!overflow && !underflow && bitStr && splitBits && (
+        <div>
+          <div>
+            Sign bit{' '}
+            <button
+              onClick={() => {
+                setBitStr((bitStr[0] == '1' ? '0' : '1') + bitStr.substring(1));
+                setInputText('');
+              }}
+            >
+              {bitStr[0]}
+            </button>
+          </div>
+          <div>
+            Exponent{' '}
+            {bitStr
+              .substring(1, 1 + exponentBitsCount)
+              .split('')
+              .map((bit, i) => (
+                <button
+                  key={nanoid()}
+                  onClick={() => {
+                    let copyOfBitStr = bitStr.slice();
+                    copyOfBitStr =
+                      bitStr.substring(0, i + 1) +
+                      (bitStr[i + 1] === '1' ? '0' : '1') +
+                      bitStr.substring(i + 2);
+                    setBitStr(copyOfBitStr);
+                    setInputText('');
+                  }}
+                >
+                  {bit}
+                </button>
+              ))}
+          </div>
+          <div>
+            Significands:
+            {bitStr
+              .substring(1 + exponentBitsCount)
+              .split('')
+              .map((bit, i) => (
+                <button
+                  key={nanoid()}
+                  onClick={() => {
+                    let copyOfBitStr = bitStr.slice();
+                    copyOfBitStr =
+                      bitStr.substring(0, 1 + exponentBitsCount + i) +
+                      (bitStr[1 + exponentBitsCount + i] === '1' ? '0' : '1') +
+                      bitStr.substring(exponentBitsCount + i + 2);
+                    setBitStr(copyOfBitStr);
+                    setInputText('');
+                  }}
+                >
+                  {bit}
+                </button>
+              ))}
+          </div>
         </div>
       )}
     </div>
