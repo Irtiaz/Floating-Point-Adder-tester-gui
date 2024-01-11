@@ -63,8 +63,6 @@ export const BitStringInput: React.FC<Props> = ({
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          setBitStr(null);
-          setNum(null);
           const floatInput = parseFloat(inputText);
           if (floatInput && ('' + floatInput).length === inputText.length) {
             const conversionResult = convertDecimalToFloatString(
@@ -77,6 +75,9 @@ export const BitStringInput: React.FC<Props> = ({
             setOverflow(overflow);
             setUnderflow(underflow);
             if (!overflow && !underflow) setBitStr(flooredBitString);
+          } else {
+            setBitStr(null);
+            setNum(null);
           }
         }}
         style={{ display: 'flex' }}
