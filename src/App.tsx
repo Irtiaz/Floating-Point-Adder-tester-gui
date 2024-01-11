@@ -10,11 +10,12 @@ const App: React.FC<{}> = () => {
   const [numberB, setNumberB] = useState<number | null>(null);
 
   return (
-    <div>
+    <div style={{ margin: '1em 0 0 1em' }}>
       <div>
         <div>
           Exponent bits
           <input
+            style={{ marginLeft: '0.5em' }}
             type="number"
             min={1}
             max={31 - significandBitsCount}
@@ -29,6 +30,7 @@ const App: React.FC<{}> = () => {
         <div>
           Significand bits
           <input
+            style={{ marginLeft: '0.5em' }}
             type="number"
             min={1}
             max={31 - exponentBitsCount}
@@ -42,8 +44,15 @@ const App: React.FC<{}> = () => {
         </div>
       </div>
 
-      <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-        <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          marginTop: '2em',
+          marginBottom: '5em',
+        }}
+      >
+        <div style={{ border: '1px solid red', padding: '1em' }}>
           <div style={{ textAlign: 'center' }}>A</div>
           <BitStringInput
             exponentBitsCount={exponentBitsCount}
@@ -51,7 +60,7 @@ const App: React.FC<{}> = () => {
             changeHandler={(num) => setNumberA(num)}
           />
         </div>
-        <div>
+        <div style={{ border: '1px solid green', padding: '1em' }}>
           <div style={{ textAlign: 'center' }}>B</div>
           <BitStringInput
             exponentBitsCount={exponentBitsCount}
@@ -62,8 +71,12 @@ const App: React.FC<{}> = () => {
       </div>
 
       {numberA && numberB && (
-        <div style={{ textAlign: 'center' }}>
-          <div>Result</div>
+        <div
+          style={{
+            textAlign: 'center',
+          }}
+        >
+          <div style={{ marginBottom: '0.5em', color: 'blue' }}>Result</div>
           <BitStringOutput
             num={numberA + numberB}
             exponentBitsCount={exponentBitsCount}

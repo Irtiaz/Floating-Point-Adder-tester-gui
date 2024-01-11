@@ -47,7 +47,7 @@ export const BitStringOutput: React.FC<Props> = ({
               significandsBitCount
             )}
           </div>
-          <div>
+          <div style={{ marginTop: '0.5em' }}>
             {bitStr.split('').map((bit, i) => (
               <button
                 style={{

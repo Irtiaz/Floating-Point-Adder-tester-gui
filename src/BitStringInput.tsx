@@ -24,9 +24,8 @@ export const BitStringInput: React.FC<Props> = ({
   const [bitStr, setBitStr] = useState<string | null>(null);
 
   useEffect(() => {
-    setBitStr(null);
-    setNum(null);
-    const floatInput = parseFloat(inputText);
+    let floatInput = parseFloat(inputText);
+    if (!floatInput && num) floatInput = num;
     if (floatInput) {
       const { result, overflow, underflow } = convertDecimalToFloatString(
         floatInput,
@@ -39,6 +38,9 @@ export const BitStringInput: React.FC<Props> = ({
       if (!overflow && !underflow) {
         setBitStr(result);
       }
+    } else {
+      setBitStr(null);
+      setNum(null);
     }
   }, [exponentBitsCount, significandBitsCount]);
 
@@ -80,7 +82,7 @@ export const BitStringInput: React.FC<Props> = ({
             setNum(null);
           }
         }}
-        style={{ display: 'flex' }}
+        style={{ display: 'flex', marginBottom: '1em' }}
       >
         <input
           value={inputText}
@@ -96,7 +98,7 @@ export const BitStringInput: React.FC<Props> = ({
       )}
 
       {!overflow && !underflow && bitStr && (
-        <div>
+        <div style={{ marginTop: '0.5em' }}>
           {bitStr.split('').map((bit, i) => (
             <button
               style={{
