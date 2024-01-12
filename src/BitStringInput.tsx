@@ -85,6 +85,7 @@ export const BitStringInput: React.FC<Props> = ({
         style={{ display: 'flex', marginBottom: '1em' }}
       >
         <input
+          placeholder="3.14"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           style={{ width: '90%' }}
